@@ -8,10 +8,10 @@
 **4)** Generates a payload like option 3 and injects a new MainActivity for persistence after reboot. (Persistent, Obfuscated)  
 
 ## How to use?  
-git clone https://github.com/hxrofo/Morphx.git
-cd Morphx
-chmod +x Morphx
-./Morphx
+git clone https://github.com/hxrofo/Morphx.git  
+cd Morphx  
+chmod +x Morphx  
+./Morphx  
 
 There are two subfolders next to the script, "input" is where you put your PNG icons, MainActivity.smali, the original apps to be backdoored and apktool.jar. When you first run the script, it will create another folder, "output" where you can find your compiled payload/apk.
 
