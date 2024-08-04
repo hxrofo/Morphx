@@ -251,12 +251,16 @@ function change_icon()
 {
         echo -e "\e[1;32m☢ CHOOSE PNG ICON ☢\e[0m"
         echo ""
+        while true; do
         read -p $'\e[1;33m[*] Enter Icon Filename:\e[0m \e[1;37m' iconos && echo -e '\e[0m'
         icon_path="$ICON_DIR/$iconos"
   if [ ! -f "$icon_path" ]; then
-    echo -e $red "[X] Icon $icon_path Does Not Exist."
-    exit 1
+    echo -e $red "[X] Icon $iconos Does Not Exist. Please Try Again."
+    echo ""
+    else
+    break
   fi
+  done
 }
 #function generate payload
 function gen_payload()
