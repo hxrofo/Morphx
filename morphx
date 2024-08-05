@@ -262,6 +262,7 @@ function change_icon()
   fi
   done
 }
+
 #function generate payload
 function gen_payload()
 {
@@ -606,6 +607,7 @@ function sign()
 #main menu
 function main()
 {
+clear
     while :
     do
 
@@ -645,6 +647,7 @@ function main()
                 spinlong
                 sleep 3
                 echo
+                clear
                 ;;
             2)  echo -e $lightgreen "[✔] BACKDOOR A REAL APP"
                 echo -e $green
@@ -672,7 +675,7 @@ function main()
                 error
                 sleep 2
                 echo ""
-                
+                clear
                 ;;
             3)  echo -e $lightgreen "[✔] BYPASS AV (ICON CHANGE)"
                 echo -e $green
@@ -698,6 +701,7 @@ function main()
                 error
                 sleep 2
                 echo
+                clear
                 ;;
 
                 4)  echo -e $green "[✔] STEALTHY PERSISTENCE"
@@ -725,6 +729,7 @@ function main()
                 error
                 sleep 2
                 echo
+                clear
                 ;;
 
                 
