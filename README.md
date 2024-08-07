@@ -8,7 +8,7 @@
 **2)** Takes an original app and injects MSF payload into it (METHOD 1/Obfuscated/Without "Msfvenom -x")  
 **3)** Takes an original app and injects MSF payload into it (METHOD 2/Obfuscated/ Using "Msfvenom -x")  
 **4)** Generates a payload and changes default strings and icon. (Obfuscated)  
-**5)** Generates a payload like option 3 and injects a new MainActivity for persistence after reboot. (Persistent, Obfuscated)  
+**5)** Generates a payload like option 2 and injects a new MainActivity for persistence after reboot. (Persistent, Obfuscated)  
 
 ## How to use?  
 git clone https://github.com/hxrofo/Morphx.git  
