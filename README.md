@@ -1,6 +1,6 @@
 # Morphx
 ## The Art of Obfuscating Android Payloads  
-![interface](https://github.com/user-attachments/assets/4883614e-6de0-41c7-8c64-d736bba8567e)
+![interface](https://github.com/user-attachments/assets/13ecfb76-b02c-48fd-b566-e936609ccd92)
 
 ## What does this script do?  
 ### It has 5 options:  
