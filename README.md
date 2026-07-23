@@ -1,5 +1,6 @@
  
-![interface](https://github.com/user-attachments/assets/13ecfb76-b02c-48fd-b566-e936609ccd92)
+<img width="976" height="486" alt="morphx" src="https://github.com/user-attachments/assets/0d47c70a-4748-49e1-a280-ca7596958acc" />
+
 
 # Morphx – Obfuscated Android Payload Generator
 
